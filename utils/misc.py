@@ -41,25 +41,6 @@ async def register_user(message: types.Message):
                 referral_id=int(args[0])
             )
 
-            settings = Settings.get(Settings.setting_id == 1)
-            refed_count = Users.select().where(Users.active_referral_id == int(args[0])).count()
-
-            if refed_count == settings.pdf_count_condition:
-                await dp.bot.send_document(
-                    chat_id=int(args[0]),
-                    text=settings.pdf_content
-                )
-            elif refed_count == settings.video_count_condition:
-                await dp.bot.video(
-                    chat_id=int(args[0]),
-                    text=settings.video_content
-                )
-            elif refed_count == settings.video_count_condition:
-                await dp.bot.send_video(
-                    chat_id=int(args[0]),
-                    text=settings.video_2_content
-                )
-
             logger.debug(f'user registered: @{message.from_user.username}:{message.from_user.id}. Refed from: {args[0]}')
 
         else:

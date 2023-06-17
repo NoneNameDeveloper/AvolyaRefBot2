@@ -27,3 +27,22 @@ async def free_group_join_handler(message: types.Message):
 				Users.update({Users.active_referral_id: user.referral_id})\
 					.where(Users.user_id == user_id)\
 					.execute()
+
+				settings = Settings.get(Settings.setting_id == 1)
+				refed_count = Users.select().where(Users.active_referral_id == user.referral_id).count()
+
+				if refed_count == settings.pdf_count_condition:
+					await dp.bot.send_document(
+						chat_id=user.referral_id,
+						text=settings.pdf_content
+					)
+				elif refed_count == settings.video_count_condition:
+					await dp.bot.video(
+						chat_id=user.referral_id,
+						text=settings.video_content
+					)
+				elif refed_count == settings.video_count_condition:
+					await dp.bot.send_video(
+						chat_id=user.referral_id,
+						text=settings.video_2_content
+					)
