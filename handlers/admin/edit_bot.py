@@ -49,7 +49,7 @@ async def change_chat_1_handler(call: types.CallbackQuery, state: FSMContext):
     await call.message.answer("✍️ <b>Введите новое значение</b>", reply_markup=rmenu.cancel_admin_markup())
 
 
-@dp.message_handler(state=EditValue.value_body, content_types=['animation', 'video', 'document'])
+@dp.message_handler(state=EditValue.value_body, content_types=['animation', 'video', 'document', 'text'])
 async def change_chat_2_handler(message: types.Message, state: FSMContext):
 
     data = await state.get_data()
