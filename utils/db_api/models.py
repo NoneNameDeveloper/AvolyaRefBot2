@@ -23,9 +23,9 @@ class Users(Model):
         получить топ ппо количеству рфералов
         по заданному айди
         """
-        users: list[Users] = Users.select(Users, fn.COUNT(Users.active_referral_id).alias('referral_count')) \
+        users: list[Users] = Users.select(Users, fn.COUNT(Users.active_referral_id).alias('active_referral_id')) \
             .group_by(Users.user_id) \
-            .order_by(fn.COUNT(Users.referral_id).asc()) \
+            .order_by(fn.COUNT(Users.active_referral_id).desc()) \
             .limit(10)
 
         return users
@@ -87,16 +87,14 @@ class Messages(Model):
         database = db
         db_table = 'messages'
 
-
-
 # db.drop_tables([Buttons])
 # db.create_tables([Buttons])
 
 
 # db.drop_tables([Users, Settings, Buttons, Messages])
-db.create_tables([Users, Settings, Buttons, Messages])
-#
-#
-Settings.create()
-Messages.create()
-Buttons.create()
+# db.create_tables([Users, Settings, Buttons, Messages])
+# #
+# #
+# Settings.create()
+# Messages.create()
+# Buttons.create()

@@ -34,15 +34,18 @@ async def free_group_join_handler(message: types.Message):
 				if refed_count == settings.pdf_count_condition:
 					await dp.bot.send_document(
 						chat_id=user.referral_id,
-						document=settings.pdf_content
+						document=settings.pdf_content,
+						caption="Поздравляем! Вы получаете подарок 🎁"
 					)
 				elif refed_count == settings.video_count_condition:
 					await dp.bot.send_video(
 						chat_id=user.referral_id,
-						video=settings.video_content
+						video=settings.video_content,
+						caption="Поздравляем! Вы получаете подарок 🎁"
 					)
 				elif refed_count == settings.video_count_condition:
 					await dp.bot.send_video(
 						chat_id=user.referral_id,
-						video=settings.video_2_content
+						video=settings.video_2_content,
+						caption="Поздравляем! Вы получаете подарок 🎁"
 					)
