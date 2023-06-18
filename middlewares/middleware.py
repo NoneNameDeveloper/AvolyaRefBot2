@@ -9,8 +9,8 @@ from utils.db_api import Users
 class AuthenticationMiddleware(BaseMiddleware):
     async def on_process_message(self, message: Message, data: dict):
 
-        if message.chat.type != "private":
-            raise CancelHandler()
+        #  if message.chat.type != "private":
+          #   raise CancelHandler()
 
         user_id = message.chat.id
         logger.debug(f'New message from @{message.from_user.username}:{user_id}')

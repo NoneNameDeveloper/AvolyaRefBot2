@@ -88,8 +88,8 @@ class Messages(Model):
         database = db
         db_table = 'messages'
 
-db.drop_tables([Buttons])
-db.create_tables([Buttons])
+# db.drop_tables([Buttons])
+# db.create_tables([Buttons])
 
 
 # db.drop_tables([Users, Settings, Buttons, Messages])
@@ -98,4 +98,4 @@ db.create_tables([Buttons])
 # #
 # Settings.create()
 # Messages.create()
-Buttons.create()
+# Buttons.create()
