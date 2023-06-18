@@ -11,9 +11,9 @@ def main_markup():
 
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
 
-    markup.add(buttons.get_presents, buttons.chat_enter)
-    markup.add(buttons.my_referrals, buttons.support)
-    markup.add(buttons.telegram_game)
+    markup.add(buttons.get_presents_button, buttons.chat_enter_button)
+    markup.add(buttons.my_referrals_button, buttons.support_button)
+    markup.add(buttons.telegram_game_button)
 
     return markup
 

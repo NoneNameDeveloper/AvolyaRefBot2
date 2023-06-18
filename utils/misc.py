@@ -53,3 +53,30 @@ async def register_user(message: types.Message):
             logger.debug(f'user registered: @{message.from_user.username}:{message.from_user.id}')
 
     return
+
+
+async def give_prize(user_id: int) -> None:
+    """
+    проверка параметров и выдача приза, если они подходят
+    """
+    settings = Settings.get(Settings.setting_id == 1)
+    refed_count = Users.select().where(Users.active_referral_id == user_id).count()
+
+    if refed_count == settings.pdf_count_condition:
+        await dp.bot.send_document(
+            chat_id=user_id,
+            document=settings.pdf_content,
+            caption="Поздравляем! Вы получаете подарок 🎁"
+        )
+    elif refed_count == settings.video_count_condition:
+        await dp.bot.send_video(
+            chat_id=user_id,
+            video=settings.video_content,
+            caption="Поздравляем! Вы получаете подарок 🎁"
+        )
+    elif refed_count == settings.video_count_condition:
+        await dp.bot.send_video(
+            chat_id=user_id,
+            video=settings.video_2_content,
+            caption="Поздравляем! Вы получаете подарок 🎁"
+        )

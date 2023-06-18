@@ -3,6 +3,7 @@ from aiogram import types
 from utils.db_api import Users, Settings
 
 from loader import dp
+from utils.misc import give_prize
 
 
 @dp.message_handler(content_types=types.ContentTypes.NEW_CHAT_MEMBERS)
@@ -28,24 +29,4 @@ async def free_group_join_handler(message: types.Message):
 					.where(Users.user_id == user_id)\
 					.execute()
 
-				settings = Settings.get(Settings.setting_id == 1)
-				refed_count = Users.select().where(Users.active_referral_id == user.referral_id).count()
-
-				if refed_count == settings.pdf_count_condition:
-					await dp.bot.send_document(
-						chat_id=user.referral_id,
-						document=settings.pdf_content,
-						caption="Поздравляем! Вы получаете подарок 🎁"
-					)
-				elif refed_count == settings.video_count_condition:
-					await dp.bot.send_video(
-						chat_id=user.referral_id,
-						video=settings.video_content,
-						caption="Поздравляем! Вы получаете подарок 🎁"
-					)
-				elif refed_count == settings.video_count_condition:
-					await dp.bot.send_video(
-						chat_id=user.referral_id,
-						video=settings.video_2_content,
-						caption="Поздравляем! Вы получаете подарок 🎁"
-					)
+				await give_prize(user.referral_id)

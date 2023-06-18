@@ -1,3 +1,5 @@
+import random
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
@@ -8,6 +10,7 @@ from utils.db_api.models import Users
 from states.states import ManipulateState, DelBalance
 
 from loader import dp
+from utils.misc import give_prize
 
 
 @dp.callback_query_handler(text_contains="manipulateuser")
@@ -32,7 +35,7 @@ async def manipulate_main_handler(message: types.Message, state: FSMContext):
     # юзернейм введен
     else:
         try:
-            user = Users.get(Users.username == message.text)
+            user: Users = Users.get(Users.username == message.text)
         except:
             return await message.answer("Такого пользователя нет в базе!")
 
@@ -40,8 +43,7 @@ async def manipulate_main_handler(message: types.Message, state: FSMContext):
 🆔 Пользователь: {user.user_id}
 
 👨‍🦰 Имя: {user.user_name}
-🚪 Доступ: {user.entrance}
-💰 Баланс: {user.balance}
+🔐 Забанен: {user.banned}
 """, reply_markup=menu.user_status_markup(user))
 
     await state.finish()
@@ -50,12 +52,10 @@ async def manipulate_main_handler(message: types.Message, state: FSMContext):
 @dp.callback_query_handler(text_contains="manipulate_")
 async def user_action_handler(call: types.CallbackQuery, state: FSMContext):
 
-    await call.answer()
-
     action = call.data.split("_")[2]
     user_id = call.data.split("_")[1]
 
-    user = Users.get(Users.user_id == user_id)
+    user: Users = Users.get(Users.user_id == user_id)
     if action == "block":
         user.banned = True
         user.save()
@@ -68,49 +68,29 @@ async def user_action_handler(call: types.CallbackQuery, state: FSMContext):
         await call.message.answer("Пользователь разблокирован!", reply_markup=types.ReplyKeyboardRemove())
 
     elif action == "delete":
+        print(user_id)
+        row_count_mod = Users.update({Users.active_referral_id: 0}).where(Users.active_referral_id == user_id).execute()
+        print(row_count_mod)
         user.delete_instance()
         await call.message.answer("Пользователь удален из базы!", reply_markup=types.ReplyKeyboardRemove())
 
-    elif action == "allow":
-        user.entrance = True
-        user.save()
-        await call.message.answer("Пользователь получил доступ в чат!", reply_markup=types.ReplyKeyboardRemove())
-    else:
-        user.entrance = False
-        user.save()
-        await call.message.answer("Пользователь больше не имеет доступа в чат!", reply_markup=types.ReplyKeyboardRemove())
+    # добавление реферала пользователю
+    elif action == "add":
+        Users.create(
+            user_id="000" + str(random.randint(99999, 99999999999999)),
+            user_name="None",
+            username="None",
+            referral_id=None,
+            active_referral_id=user_id,
+            is_admin=False,
+            banned=False
+        )
 
-    await state.finish()
+        refs_count = Users.select().where(Users.active_referral_id == user_id).count()
 
+        await call.message.answer(f"Реферал добавлен! Количество рефералов у пользователя - {refs_count}")
 
-# вычитание баланса
-@dp.callback_query_handler(text_contains="delbalance_")
-async def minus_balance_from_user_1(call: types.CallbackQuery, state: FSMContext):
+        await give_prize(user_id)
 
     await call.answer()
-
-    user_id = call.data.split('_')[1]
-
-    await call.message.answer("Введите сумму, на которую убавится баланс у пользователя.", reply_markup=rmenu.cancel_admin_markup())
-
-    await DelBalance.value.set()
-    await state.update_data(user_id=user_id)
-
-
-@dp.message_handler(state=DelBalance.value)
-async def del_balance_prod(message: types.Message, state: FSMContext):
-
-    try:
-        int(message.text)
-    except:
-        return await message.answer("Введите целое число!")
-
-    data = await state.get_data()
-    user_id = data['user_id']
-
-    user_info = Users.get(Users.user_id == user_id)
-    user_info.balance -= int(message.text)
-    user_info.save()
-
-    await message.answer("Успешно!", reply_markup=types.ReplyKeyboardRemove())
-    return await state.finish()
+    await state.finish()

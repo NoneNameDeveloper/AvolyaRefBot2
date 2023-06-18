@@ -13,7 +13,9 @@ def admin_main_markup():
         InlineKeyboardButton("➕ Добавить админа", callback_data="add_admin"),
         InlineKeyboardButton("➖ Удалить админа", callback_data="del_admin")
     )
-
+    markup.add(
+        InlineKeyboardButton("👨‍💼 Изменить статус пользователя", callback_data="manipulateuser")
+    )
     markup.add(
         InlineKeyboardButton("📨 Рассылка", callback_data="sending")
     )
@@ -55,6 +57,29 @@ def admin_main_markup():
     )
     markup.add(
         InlineKeyboardButton("Таблица админов", callback_data="table_4")
+    )
+
+    return markup
+
+
+def user_status_markup(user_info):
+    """
+    блокировка/разблокировка/удаление пользователя
+    """
+    markup = InlineKeyboardMarkup()
+
+    markup.add(
+        InlineKeyboardButton(
+            text="🔒 Заблокировать" if not user_info.banned else "🔓 Разблокировать",
+            callback_data=f"manipulate_{user_info.user_id}_block" if not user_info.banned else f"manipulate_{user_info.user_id}_unblock"
+        ),
+        InlineKeyboardButton(
+            text="⚰️ Удалить",
+            callback_data=f"manipulate_{user_info.user_id}_delete"
+        ),
+        InlineKeyboardButton(
+            text="➕ Добавить реферала", callback_data=f"manipulate_{user_info.user_id}_add"
+        )
     )
 
     return markup
@@ -117,8 +142,8 @@ def rate_markup():
     buttons = Buttons.get(Buttons.buttons_id == 1)
 
     markup.add(
-        InlineKeyboardButton(buttons.ref_list, callback_data="my_refs"),
-        InlineKeyboardButton(buttons.rating, callback_data="rating")
+        InlineKeyboardButton(buttons.ref_list_button, callback_data="my_refs"),
+        InlineKeyboardButton(buttons.rating_button, callback_data="rating")
     )
 
     return markup
@@ -133,7 +158,7 @@ def partner_markup(link):
     buttons = Buttons.get(Buttons.buttons_id == 1)
 
     markup.add(
-        InlineKeyboardButton(buttons.share, url=f"https://t.me/share/url?url={link}")
+        InlineKeyboardButton(buttons.share_button, url=f"https://t.me/share/url?url={link}")
     )
 
     return markup

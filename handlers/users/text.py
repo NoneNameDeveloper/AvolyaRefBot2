@@ -13,7 +13,7 @@ async def text_handler(message: types.Message):
     messages = Messages.get(Messages.messages_id == 1)
 
     # получить подарки
-    if message.text == buttons.get_presents:
+    if message.text == buttons.get_presents_button:
         bot_ = await dp.bot.get_me()
         bot_username = bot_.username
         link = f"https://t.me/{bot_username}?start={chat_id}"
@@ -25,22 +25,22 @@ async def text_handler(message: types.Message):
         )
 
     # вход в чат эфира
-    elif message.text == buttons.chat_enter:
+    elif message.text == buttons.chat_enter_button:
         await message.answer(text=messages.enter_chat)
 
     # мои приглашенные
-    elif message.text == buttons.my_referrals:
+    elif message.text == buttons.my_referrals_button:
         await message.answer(
             text=messages.refs_list,
             reply_markup=menu.rate_markup()
         )
 
     # тех.подержка
-    elif message.text == buttons.support:
+    elif message.text == buttons.support_button:
         await message.answer(messages.support)
 
     # телеграм игра
-    elif message.text == buttons.telegram_game:
+    elif message.text == buttons.telegram_game_button:
         await message.answer(messages.telegram_game)
 
 

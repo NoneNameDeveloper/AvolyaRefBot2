@@ -13,6 +13,7 @@ class Users(Model):
     referral_id = BigIntegerField(null=True)
     active_referral_id = BigIntegerField(null=False, default=0)
     is_admin = BooleanField(null=False, default=False)
+    banned = BooleanField(null=False, default=False)
 
     class Meta:
         database = db
@@ -49,14 +50,14 @@ class Settings(Model):
 
 class Buttons(Model):
     buttons_id = AutoField(primary_key=True, null=False)
-    get_presents = TextField(default="получить подарки")
-    chat_enter = TextField(default="вход в чат эфира")
-    my_referrals = TextField(default="мои приглашенные")
-    support = TextField(default="тех. поддержка")
-    telegram_game = TextField(default="телеграм игра")
-    rating = TextField(default="Топ")
-    ref_list = TextField(default="Список приглашенных")
-    share = TextField(default="Поделиться")
+    get_presents_button = TextField(default="получить подарки")
+    chat_enter_button = TextField(default="вход в чат эфира")
+    my_referrals_button = TextField(default="мои приглашенные")
+    support_button = TextField(default="тех. поддержка")
+    telegram_game_button = TextField(default="телеграм игра")
+    rating_button = TextField(default="Топ")
+    ref_list_button = TextField(default="Список приглашенных")
+    share_button = TextField(default="Поделиться")
 
     class Meta:
         database = db
@@ -87,8 +88,8 @@ class Messages(Model):
         database = db
         db_table = 'messages'
 
-# db.drop_tables([Buttons])
-# db.create_tables([Buttons])
+db.drop_tables([Buttons])
+db.create_tables([Buttons])
 
 
 # db.drop_tables([Users, Settings, Buttons, Messages])
@@ -97,4 +98,4 @@ class Messages(Model):
 # #
 # Settings.create()
 # Messages.create()
-# Buttons.create()
+Buttons.create()

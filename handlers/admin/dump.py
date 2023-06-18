@@ -12,11 +12,11 @@ def users_dump(by_referal: bool = False, admin: bool = False, filename: str = "u
     заполнение таблицы №1,2 - пользователи вошедшие по реф. ссылке и не по реф. ссылке
     """
     if admin:
-        data = Users.select().where(Users.is_admin == True)
+        data = Users.select().where(Users.is_admin)
     elif by_referal:
-        data = Users.select().where(Users.referral_id != None).order_by(Users.date_time.desc())
+        data = Users.select().where(Users.active_referral_id != 0).order_by(Users.date_time.desc())
     else:
-        data = Users.select().where(Users.referral_id == None).order_by(Users.date_time.desc())
+        data = Users.select().where(Users.active_referral_id == 0).order_by(Users.date_time.desc())
 
     # Создание и заполнение файла Excel
     wb = Workbook()
@@ -27,9 +27,9 @@ def users_dump(by_referal: bool = False, admin: bool = False, filename: str = "u
         ws.append(['User ID', 'ФИО', 'Username', 'Количество приглашенных', 'Дата входа в бота', 'реферер', 'Админ', 'ФИО Пригласившего', 'Username пригласившего'])
 
         for row in data:
-            referal_data = Users.get(Users.user_id == row.referral_id)
+            referal_data = Users.get(Users.user_id == row.active_referral_id)
 
-            invited_count = Users.select().where(Users.referral_id == row.user_id).count()
+            invited_count = Users.select().where(Users.active_referral_id == row.user_id).count()
 
             ws.append(
                 [row.user_id, row.user_name, row.username, invited_count, row.date_time, row.active_referral_id,
@@ -39,7 +39,7 @@ def users_dump(by_referal: bool = False, admin: bool = False, filename: str = "u
 
         for row in data:
 
-            invited_count = Users.select().where(Users.referral_id == row.user_id).count()
+            invited_count = Users.select().where(Users.active_referral_id == row.user_id).count()
 
             ws.append(
                 [row.user_id, row.user_name, row.username, invited_count, row.date_time, row.active_referral_id, row.is_admin])
@@ -68,10 +68,3 @@ async def dump_tables_handler(call: types.CallbackQuery):
 
     else:
         return
-
-
-
-
-
-
-
