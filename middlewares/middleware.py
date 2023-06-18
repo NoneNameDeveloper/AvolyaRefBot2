@@ -19,7 +19,8 @@ class AuthenticationMiddleware(BaseMiddleware):
 
         if not user_info:
             if not message.text == "/start":
-                return await message.answer("Введите /start")
+                if message.chat.type == "private":
+                    return await message.answer("Введите /start")
             else:
                 return logger.error(f"user @{message.from_user.username} is not authorized..")
 
