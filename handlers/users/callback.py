@@ -18,7 +18,7 @@ async def show_rate_handler(call: types.CallbackQuery):
 
         count = Users.select().where(Users.active_referral_id == user.user_id).count()
 
-        res.append([user.username, count])
+        res.append([user.user_name, count])
         res.sort(key=lambda x: x[1], reverse=True)
 
     for n, data in enumerate(res):
@@ -35,10 +35,10 @@ async def my_refs_list_handler(call: types.CallbackQuery):
 
     my_referrals: list[Users] = Users.select().where(Users.active_referral_id == call.message.chat.id)
 
-    text = "Ваши приглашённые\n\n"
+    text = "Ваши приглашённые\n\n" if len(my_referrals) > 0 else "У Вас пока 0 приглашённых."
 
     for n, user in enumerate(my_referrals):
-        text += f'{n+1}) {user.username}\n'
+        text += f'{n+1}) {user.user_name}\n'
 
     return await call.message.edit_text(
         text=text,
