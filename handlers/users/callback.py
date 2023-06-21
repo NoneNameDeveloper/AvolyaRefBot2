@@ -12,18 +12,21 @@ async def show_rate_handler(call: types.CallbackQuery):
 
     text = "👑 Топ количества приглашённых\n\n"
 
-    res = []
-
     for n, user in enumerate(top_users):
+        text += f'{n + 1}) {user.user_name} - {user.referrals_count}\n'
 
-        count = Users.select().where(Users.active_referral_id == user.user_id).count()
-
-        res.append([user.user_name, count])
-        res.sort(key=lambda x: x[1], reverse=True)
-
-    for n, data in enumerate(res):
-        text += f'{n+1}) {data[0]} - {data[1]}\n'
-
+    # res = []
+    #
+    # for n, user in enumerate(top_users):
+    #
+    #     count = Users.select().where(Users.active_referral_id == user.user_id).count()
+    #
+    #     res.append([user.user_name, count])
+    #     res.sort(key=lambda x: x[1], reverse=True)
+    #
+    # for n, data in enumerate(res):
+    #     text += f'{n+1}) {data[0]} - {data[1]}\n'
+    #
     return await call.message.edit_text(
         text=text,
         reply_markup=menu.back_to_refs_markup()

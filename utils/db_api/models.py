@@ -24,10 +24,14 @@ class Users(Model):
         получить топ ппо количеству рфералов
         по заданному айди
         """
-        users: list[Users] = Users.select(Users, fn.COUNT(Users.active_referral_id).alias('active_referral_id')) \
-            .group_by(Users.user_id) \
-            .order_by(fn.COUNT(Users.active_referral_id).desc()) \
-            .limit(10)
+        users_alias = Users.alias()
+
+        users: list[Users] = Users.\
+            select(Users, fn.COUNT().alias('referrals_count')).\
+            join(users_alias, on=(Users.user_id == users_alias.active_referral_id)).\
+            group_by(Users.user_id).\
+            order_by(SQL('referrals_count DESC')).\
+            limit(10)
 
         return users
 
