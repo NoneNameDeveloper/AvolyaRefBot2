@@ -13,7 +13,7 @@ async def show_rate_handler(call: types.CallbackQuery):
     text = "👑 Топ количества приглашённых\n\n"
 
     for n, user in enumerate(top_users):
-        text += f'{n + 1}) {user.user_name} - {user.referrals_count}\n'
+        text += f'{n + 1}) {user[1]} - {user[-1]}\n'
 
     # res = []
     #

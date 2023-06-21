@@ -24,16 +24,30 @@ class Users(Model):
         получить топ ппо количеству рфералов
         по заданному айди
         """
-        users_alias = Users.alias()
+        query = '''
+            SELECT u.*, COUNT(*) AS referrals_count
+            FROM Users u
+            JOIN Users r ON u.user_id = r.active_referral_id
+            GROUP BY u.user_id
+            ORDER BY referrals_count DESC
+            LIMIT 10;
+        '''
 
-        users: list[Users] = Users.\
-            select(Users, fn.COUNT().alias('referrals_count')).\
-            join(users_alias, on=(Users.user_id == users_alias.active_referral_id)).\
-            group_by(Users.user_id).\
-            order_by(SQL('referrals_count DESC')).\
-            limit(10)
+        data = db.execute_sql(query)
 
-        return users
+        return data
+
+
+        # users_alias = Users.alias()
+        #
+        # users: list[Users] = Users.\
+        #     select(Users, fn.COUNT().alias('referrals_count')).\
+        #     join(users_alias, on=(Users.user_id == users_alias.active_referral_id)).\
+        #     group_by(Users.user_id).\
+        #     order_by(SQL('referrals_count DESC')).\
+        #     limit(10)
+        #
+        # return users
 
 
 class Settings(Model):
