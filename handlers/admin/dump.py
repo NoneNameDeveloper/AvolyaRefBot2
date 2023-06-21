@@ -27,7 +27,10 @@ def users_dump(by_referal: bool = False, admin: bool = False, filename: str = "u
         ws.append(['User ID', 'ФИО', 'Username', 'Количество приглашенных', 'Дата входа в бота', 'реферер', 'Админ', 'ФИО Пригласившего', 'Username пригласившего'])
 
         for row in data:
-            referal_data = Users.get(Users.user_id == row.active_referral_id)
+            referal_data = Users.get_or_none(Users.user_id == row.active_referral_id)
+
+            if not referal_data:
+                continue
 
             invited_count = Users.select().where(Users.active_referral_id == row.user_id).count()
 
