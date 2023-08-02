@@ -112,7 +112,7 @@ class Messages(Model):
 
 
 # db.drop_tables([Users, Settings, Buttons, Messages])
-# db.create_tables([Users, Settings, Buttons, Messages])
+db.create_tables([Users, Settings, Buttons, Messages])
 # #
 # #
 # Settings.create()
