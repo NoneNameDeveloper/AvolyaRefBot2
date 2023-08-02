@@ -29,8 +29,7 @@ class Users(Model):
             FROM Users u
             JOIN Users r ON u.user_id = r.active_referral_id
             GROUP BY u.user_id
-            ORDER BY referrals_count DESC
-            LIMIT 10;
+            ORDER BY referrals_count DESC;
         '''
 
         data = db.execute_sql(query)
@@ -76,6 +75,7 @@ class Buttons(Model):
     rating_button = TextField(default="Топ")
     ref_list_button = TextField(default="Список приглашенных")
     share_button = TextField(default="Поделиться")
+    play_3000 = TextField(default="Розыгрыщ 3000₽")
 
     class Meta:
         database = db
@@ -101,6 +101,7 @@ class Messages(Model):
     enter_chat = TextField(null=False, default="""Добро пожаловать в чат""")
     support = TextField(null=False, default="""https://t.me/Teh_podderjhka""")
     refs_list = TextField(null=False, default="""Нажмите кнопки ниже для вывода информации..""")
+    play_3000 = TextField(null=False, default="""Розыгрываются 3к рублей""")
 
     class Meta:
         database = db

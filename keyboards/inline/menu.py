@@ -162,3 +162,39 @@ def partner_markup(link):
     )
 
     return markup
+
+
+def paginate_top(data: list[Users], page: int = 0):
+    """пагинация топа"""
+    markup = InlineKeyboardMarkup()
+
+    per_page = 10
+
+    data = list(data)
+    total_count = len(data)
+
+    serv_btns = []
+
+    # количество меньше или равно 10
+    if len(data) <= per_page:
+        print("None")
+        return None
+
+    if page > 0:
+        serv_btns.append(
+            InlineKeyboardButton(text="<<", callback_data=f"open_page|{page - 1}")
+        )
+
+    print(total_count)
+    if total_count > (page+1) * per_page:
+        serv_btns.append(
+            InlineKeyboardButton(text=">>", callback_data=f"open_page|{page + 1}")
+        )
+
+    markup.add(*serv_btns)
+
+    markup.add(
+        InlineKeyboardButton("↩️ Назад", callback_data='back_to_refs')
+    )
+
+    return markup
