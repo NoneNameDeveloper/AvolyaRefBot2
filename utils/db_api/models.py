@@ -115,6 +115,6 @@ class Messages(Model):
 db.create_tables([Users, Settings, Buttons, Messages])
 # #
 # #
-# Settings.create()
-# Messages.create()
-# Buttons.create()
+Settings.create()
+Messages.create()
+Buttons.create()
