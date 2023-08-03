@@ -13,7 +13,7 @@ def main_markup():
 
     markup.add(buttons.get_presents_button, buttons.chat_enter_button)
     markup.add(buttons.my_referrals_button, buttons.support_button)
-    markup.add(buttons.telegram_game_button, buttons.play_3000)
+    markup.add(buttons.play_3000_button, buttons.telegram_game_button)
 
     return markup
 
