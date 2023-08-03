@@ -75,7 +75,7 @@ class Buttons(Model):
     rating_button = TextField(default="Топ")
     ref_list_button = TextField(default="Список приглашенных")
     share_button = TextField(default="Поделиться")
-    play_3000 = TextField(default="Розыгрыщ 3000₽")
+    play_3000_button = TextField(default="Розыгрыщ 3000₽")
 
     class Meta:
         database = db

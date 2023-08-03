@@ -44,7 +44,7 @@ async def text_handler(message: types.Message):
         await message.answer(messages.telegram_game)
 
     # розыгрываеются 3к
-    elif message.text == buttons.play_3000:
+    elif message.text == buttons.play_3000_button:
         await message.answer(messages.play_3000)
 
 
