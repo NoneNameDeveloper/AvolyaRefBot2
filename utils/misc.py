@@ -63,21 +63,23 @@ async def give_prize(user_id: int) -> None:
     settings = Settings.get(Settings.setting_id == 1)
     refed_count = Users.select().where(Users.active_referral_id == user_id).count()
 
+    messages = Messages.get(Messages.messages_id == 1)
+
     if refed_count == settings.pdf_count_condition:
         await dp.bot.send_document(
             chat_id=user_id,
             document=settings.pdf_content,
-            caption="Поздравляем! Вы получаете подарок 🎁"
+            caption=messages.prize_1
         )
     elif refed_count == settings.video_count_condition:
         await dp.bot.send_video(
             chat_id=user_id,
             video=settings.video_content,
-            caption="Поздравляем! Вы получаете подарок 🎁"
+            caption=messages.prize_2
         )
     elif refed_count == settings.video_2_count_condition:
         await dp.bot.send_video(
             chat_id=user_id,
             video=settings.video_2_content,
-            caption="Поздравляем! Вы получаете подарок 🎁"
+            caption=messages.prize_3
         )

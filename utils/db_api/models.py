@@ -102,6 +102,9 @@ class Messages(Model):
     support = TextField(null=False, default="""https://t.me/Teh_podderjhka""")
     refs_list = TextField(null=False, default="""Нажмите кнопки ниже для вывода информации..""")
     play_3000 = TextField(null=False, default="""Розыгрываются 3к рублей""")
+    prize_1 = TextField(null=False, default="Поздравляем! Вы получаете подарок 🎁")
+    prize_2 = TextField(null=False, default="Поздравляем! Вы получаете подарок 🎁")
+    prize_3 = TextField(null=False, default="Поздравляем! Вы получаете подарок 🎁")
 
     class Meta:
         database = db
