@@ -43,9 +43,15 @@ async def text_handler(message: types.Message):
     elif message.text == buttons.telegram_game_button:
         await message.answer(messages.telegram_game)
 
-    # розыгрываеются 3к
+    # розыгрываются 3к
     elif message.text == buttons.play_3000_button:
-        await message.answer(messages.play_3000)
+        bot_ = await dp.bot.get_me()
+        bot_username = bot_.username
+        link = f"https://t.me/{bot_username}?start={chat_id}"
+
+        await message.answer(messages.play_3000.replace(
+            "{ref_link}", link
+        ))
 
 
 

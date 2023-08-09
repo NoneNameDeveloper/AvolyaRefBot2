@@ -16,8 +16,9 @@ async def started_message(message: types.Message):
 
     messages = Messages.get(Messages.messages_id == 1)
 
-    await message.answer(
-        text=messages.start_message,
+    await message.answer_photo(
+        photo="https://i.ibb.co/H2ssX87/image.png",
+        caption=messages.start_message,
         reply_markup=rmenu.main_markup()
     )
 
@@ -74,7 +75,7 @@ async def give_prize(user_id: int) -> None:
             video=settings.video_content,
             caption="Поздравляем! Вы получаете подарок 🎁"
         )
-    elif refed_count == settings.video_count_condition:
+    elif refed_count == settings.video_2_count_condition:
         await dp.bot.send_video(
             chat_id=user_id,
             video=settings.video_2_content,
