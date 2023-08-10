@@ -9,7 +9,7 @@ class Users(Model):
     user_id = BigIntegerField(null=False, primary_key=True)
     user_name = TextField()
     username = TextField()
-    date_time = DateTimeField(null=False, constraints=[SQL('DEFAULT CURRENT_TIMESTAMP')], default=datetime.datetime.now())
+    date_time = DateTimeField(null=False, constraints=[SQL('DEFAULT CURRENT_TIMESTAMP')], default=datetime.datetime.now)
     referral_id = BigIntegerField(null=True)
     active_referral_id = BigIntegerField(null=False, default=0)
     is_admin = BooleanField(null=False, default=False)
