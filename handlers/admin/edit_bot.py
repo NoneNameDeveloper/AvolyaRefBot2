@@ -212,7 +212,18 @@ async def add_admin_input(message: types.Message, state: FSMContext):
 
     await state.finish()
     await message.answer("Админ удален!", reply_markup=types.ReplyKeyboardRemove())
-#
+
+
+@dp.callback_query_handler(text="drop_refs", state='*')
+async def drop_ref_stat(call: types.CallbackQuery, state: FSMContext):
+
+    await state.finish()
+
+    Users.update({"referral_id": None}).execute()
+
+    await call.message.answer("Рефералы были успешно сброшены.")
+
+
 #
 # # Изменение таблицы Settings (сумма входа в чат, позиции реферальных бонусов)
 # @dp.callback_query_handler(text="changeentrancesum")

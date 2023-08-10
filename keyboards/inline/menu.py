@@ -58,6 +58,9 @@ def admin_main_markup():
     markup.add(
         InlineKeyboardButton("Таблица админов", callback_data="table_4")
     )
+    markup.add(
+        InlineKeyboardButton("Сбросить статистику рефералов", callback_data="drop_refs")
+    )
 
     return markup
 
