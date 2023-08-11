@@ -219,7 +219,7 @@ async def drop_ref_stat(call: types.CallbackQuery, state: FSMContext):
 
     await state.finish()
 
-    Users.update({"referral_id": None}).execute()
+    Users.update({"referral_id": None, "active_referral_id": None}).execute()
 
     await call.message.answer("Рефералы были успешно сброшены.")
 
